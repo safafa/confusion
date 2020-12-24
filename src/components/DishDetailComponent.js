@@ -1,14 +1,8 @@
-import React, {Component} from 'react';
-import {Card, CardImg, CardImgOverlay, CardText, CardBody, CardTitle} from 'reactstrap';
-class DishDetail extends Component{
-    constructor(props){
-        super(props);
-        this.state ={
+import React from 'react';
+import {Card, CardImg, CardText, CardBody, CardTitle} from 'reactstrap';
 
-        }
-    }
-
-    renderDish(dish){
+   
+    function RenderDish({dish}){
         return(
             <Card>
             <CardImg width="100%" src={dish.image} alt={dish.name}/>
@@ -17,14 +11,14 @@ class DishDetail extends Component{
                 <CardText>{dish.description}</CardText>
             </CardBody>
         </Card>
-        )
+        );
     }
 
-    renderComments(comments){
+   function  RenderComments({comments}){
         const commentsL = comments.map(comment =>{
             return(
                 <div key={comment.id} className="col-12 col-md-5 mt-1">
-                    <p>--{comment.author}, {comment.date}</p>
+                    <p>--{comment.author}, {new Intl.DateTimeFormat('en-US',{year: 'numeric', month: 'short', day:'2-digit'}).format(new Date(Date.parse(comment.date)))}</p>
                     <p>{comment.comment}</p>
                 </div>
             )
@@ -47,17 +41,23 @@ class DishDetail extends Component{
     }
 
 
-
-    render(){
-        return(
-            <div className="row" >
-                <div className="col-12 col-md-5 mt-1">
-                    {this.renderDish(this.props.dish)}
-                </div>
-                {this.renderComments(this.props.dish.comments)}
+const DishDetail = (props)=>{
+    if(props.dish !=null)
+    return(
+        <div className="row" >
+            <div className="col-12 col-md-5 mt-1">
+                <RenderDish dish={props.dish} />
             </div>
-        )
-    }
-
+            <RenderComments comments={props.dish.comments} />
+        </div>
+    )
+    else 
+    return(<div>
+        
+    </div>)
 }
+    
+      
+    
+
 export default DishDetail;
